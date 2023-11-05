@@ -7,7 +7,6 @@ import com.megacoffee_jpa_restapi.auth.PrincipalDetails;
 import com.megacoffee_jpa_restapi.entity.member.Member;
 import com.megacoffee_jpa_restapi.exception.ExceptionResult;
 import com.megacoffee_jpa_restapi.repository.MemberRepository;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -52,7 +51,7 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
 
-            //chain.doFilter(request, response);
+            chain.doFilter(request, response);
 
         } catch (AlgorithmMismatchException e) {
             throw new AlgorithmMismatchException("JWT 토큰의 시그니쳐 알고리즘 오류");
@@ -63,12 +62,8 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
             response.getWriter().print(ExceptionResult.TOKEN_EXPIRED_EXCEPTION.getResult());
         } catch (InvalidClaimException e) {
             throw new InvalidClaimException("잘못된 값 입력 오류");
-        } /*catch (AccessDeniedException e) {
-            throw new TokenExpiredException("토큰 만료 테스트");
-        }*/ catch (JWTVerificationException e) {
+        } catch (JWTVerificationException e) {
             throw new JWTVerificationException("JWT 토큰 인증 오류");
         }
-
-        chain.doFilter(request, response);
     }
 }

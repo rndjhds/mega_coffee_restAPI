@@ -7,7 +7,8 @@ import java.util.Arrays;
 import java.util.List;
 
 public enum ExceptionResult {
-    TOKEN_EXPIRED_EXCEPTION(HttpStatus.UNAUTHORIZED, "JWT 토큰의 시간이 만료되었습니다.");
+    TOKEN_EXPIRED_EXCEPTION(HttpStatus.UNAUTHORIZED, "JWT 토큰의 시간이 만료되었습니다."),
+    ACCESS_DENIED_EXCEPTION(HttpStatus.UNAUTHORIZED, "권한이 없습니다.");
 
     private HttpStatus httpStatus;
     private String status;

@@ -21,6 +21,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final MemberRepository memberRepository;
     private final CorsFilter corsFilter;
+    private final EncodingFilter encodingFilter;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -30,6 +31,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         // JWT 토큰 생성 필터 및 필터의 시간 처리 필터 추가 예정
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
+                .addFilterBefore(encodingFilter, JwtAuthorizationFilter.class)
                 .addFilter(corsFilter)
                 .formLogin().usernameParameter("id").disable()
                 .httpBasic().disable()
